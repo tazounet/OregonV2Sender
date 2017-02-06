@@ -3,6 +3,7 @@
 */
 
 #include "Arduino.h"
+#include "fastpin.h"
 
 class OregonV2Sender {
 	
@@ -15,8 +16,7 @@ public:
 	void setSensorIdAndChannel(byte sensorId, byte channel);
 	void send(byte humidity, float temperature, bool batteryOk);
 
-protected:
-
+private:
 	void sendZero(void);
 	void sendOne(void);
 	void sendQuarterMSB(const byte data);
@@ -35,11 +35,11 @@ protected:
 	int Sum(byte count, const byte* data);
 	void calculateAndSetChecksum(byte* data);
 
-	byte _txPin;
 	bool _humidity;
 	// Buffer for Oregon message
 	// THN132N => 8
 	// THGR2228N => 9
 	byte _oregonMessageBuffer[9];
+	OutputPin* _pin;
 
 };

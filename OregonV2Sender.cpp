@@ -27,8 +27,8 @@
 const unsigned long TIME = 512;
 const unsigned long TWOTIME = TIME*2;
  
-#define SEND_HIGH() digitalWrite(_txPin, HIGH)
-#define SEND_LOW() digitalWrite(_txPin, LOW)
+#define SEND_HIGH() _pin->hi();
+#define SEND_LOW()  _pin->lo();
  
 /**
  * \brief    Send logical "0" over RF
@@ -295,7 +295,6 @@ void OregonV2Sender::calculateAndSetChecksum(byte* data)
  
 OregonV2Sender::OregonV2Sender()
 {
-	setup(4, 0x20, 0xBB);
 }
 
 OregonV2Sender::OregonV2Sender(byte txPin, byte channel, byte sensorId, bool humidity)
@@ -312,8 +311,7 @@ void OregonV2Sender::setup(byte txPin, byte channel, byte sensorId, bool humidit
 
 void OregonV2Sender::setTxPin(byte txPin)
 {
-	_txPin = txPin;
-	pinMode(_txPin, OUTPUT);
+	_pin = new OutputPin(txPin);
 }
 
 void OregonV2Sender::setSensorIdAndChannel(byte sensorId, byte channel)
